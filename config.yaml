@@ -1,0 +1,193 @@
+# ─────────────────────────────────────────────────────────────────────
+# job-sankey configuration
+# Edit this file to customise the tool for your own job search.
+# ─────────────────────────────────────────────────────────────────────
+
+# ── General settings ────────────────────────────────────────────────
+
+# How far back (in days) to search your Gmail
+lookback_days: 365
+
+# Applications with no response after this many days are marked "Ghosted"
+ghosted_threshold_days: 30
+
+# ── Output ──────────────────────────────────────────────────────────
+
+output:
+  csv_file: output/applications.csv
+  html_file: output/job_search_sankey.html
+
+# ── Gmail search keywords ──────────────────────────────────────────
+# Each keyword generates a separate Gmail API search query.
+# More keywords = more coverage, but slower.
+
+search_keywords:
+  # Application acknowledgements
+  - "application received"
+  - "thank you for applying"
+  - "thanks for applying"
+  - "thank you for your application"
+  - "we received your application"
+  - "your application has been received"
+  - "application is being reviewed"
+  - "thank you for your interest"
+  - "received your application"
+  - "your application was sent"
+  - "application has been submitted"
+  - "successfully submitted"
+  - "applied to"
+  - "application status"
+  - "application update"
+  # Interview
+  - "interview invitation"
+  - "interview schedule"
+  - "phone screen"
+  # Online assessment
+  - "technical assessment"
+  - "online assessment"
+  - "coding challenge"
+  - "coding test"
+  - "hackerrank"
+  - "codility"
+  # Rejection
+  - "unfortunately"
+  - "we regret"
+  - "not moving forward"
+  - "decided not to"
+  - "will not be moving forward"
+  - "position has been filled"
+  # Offer
+  - "offer letter"
+  - "we are pleased to offer"
+
+# ── Blocked domains ────────────────────────────────────────────────
+# Emails from these domains are NEVER job applications.
+# Add any domains that send you newsletters, product updates, etc.
+
+blocked_domains:
+  # Coding practice / communities
+  - leetcode.com
+  - codeforces.com
+  - daily.dev
+  - boot.dev
+  - quora.com
+  - quine.sh
+  - hackerearth.com
+  # Developer tools
+  - docker.com
+  - notify.docker.com
+  - netlify.com
+  - ngrok.com
+  - m.ngrok.com
+  - railway.app
+  - notify.railway.app
+  - stackblitz.com
+  - github.com
+  - getpostman.com
+  - grammarly.com
+  - mail.grammarly.com
+  # Social media
+  - facebookmail.com
+  - facebook.com
+  # Certificates / Badges
+  - givemycertificate.com
+  - certifier.io
+  - holopin.io
+  # Marketing / Newsletter platforms
+  - beehiiv.com
+  - mail.beehiiv.com
+  - dare2compete.news
+  - unstop.news
+  # Hackathon / Competition platforms
+  - hack2skill.com
+  - no-reply.hack2skill.com
+  - devpost.com
+  # Misc product emails
+  - samsung-mail.com
+  - notice.samsung-mail.com
+  - geeksforgeeks.org
+  - gitguardian.com
+  - clipchamp.com
+  - info.clipchamp.com
+  - pieces.app
+  - mail.pieces.app
+
+# ── Personal email domains ─────────────────────────────────────────
+# Your own email domains — these can't tell us the company name.
+
+personal_domains:
+  - gmail.com
+  - googlemail.com
+  - yahoo.com
+  - yahoo.co.in
+  - hotmail.com
+  - outlook.com
+  - live.com
+  - aol.com
+  - icloud.com
+  - me.com
+  - mac.com
+  - protonmail.com
+  - proton.me
+  - zoho.com
+  - yandex.com
+  - mail.com
+  - rediffmail.com
+  - msn.com
+
+# ── Portal queries ─────────────────────────────────────────────────
+# High-precision queries for specific job portals.
+# Each entry searches a known sender + subject pattern.
+#
+# company_extractor types:
+#   linkedin_sent  — parses "your application was sent to <Company>"
+#   workday_sender — extracts company from <company>@myworkday.com
+#   subject_regex  — uses regex to extract company from subject line
+#   static:<Name>  — always returns <Name> as the company
+
+portals:
+  - label: "LinkedIn Easy Apply"
+    query: 'from:jobs-noreply@linkedin.com subject:"your application was sent"'
+    company_extractor: linkedin_sent
+
+  - label: "Workday"
+    query: 'from:myworkday.com subject:"application"'
+    company_extractor: workday_sender
+
+  - label: "Workday Thank You"
+    query: 'from:myworkday.com subject:"thank you"'
+    company_extractor: workday_sender
+
+  - label: "Greenhouse"
+    query: 'from:greenhouse-mail.io subject:"applying"'
+    company_extractor: subject_regex
+    regex: 'applying to (.+?)(?:\s*$|\s*[-|!])'
+
+  - label: "Lever"
+    query: 'from:lever.co subject:"application"'
+    company_extractor: subject_regex
+    regex: 'application to (.+?)(?:\s*$|\s*[-|])'
+
+# ── Manual entries ─────────────────────────────────────────────────
+# Add applications that aren't tracked via email.
+# status: Applied | Online Assessment / Test | Interviewing | Rejected | Offer
+# stages_reached: comma-separated list (applied,oa,interview,offer)
+
+manual_entries: []
+  # Example:
+  # - company: "Acme Corp"
+  #   status: "Offer"
+  #   stages_reached: "applied,interview,offer"
+
+# ── Sankey diagram appearance ──────────────────────────────────────
+
+sankey:
+  title: "Job Application Funnel"
+  colors:
+    "Total Applied": "rgba(31, 119, 180, 0.85)"
+    "OA / Test": "rgba(255, 187, 40, 0.85)"
+    "Interview": "rgba(44, 160, 101, 0.85)"
+    "Rejected / Ghosted": "rgba(214, 39, 40, 0.85)"
+    "Offer": "rgba(23, 190, 207, 0.85)"
+    "No Offer Yet": "rgba(255, 152, 48, 0.85)"
+    "Awaiting OA Result": "rgba(148, 103, 189, 0.85)"

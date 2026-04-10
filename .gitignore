@@ -1,0 +1,39 @@
+# Credentials & tokens (NEVER commit these)
+credentials.json
+token.json
+client_secret*.json
+
+# Output files (generated, not source)
+output/
+*.csv
+*.html
+!config.yaml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Old monolithic scripts (not part of the new structure)
+app.py
+scan_sent.py
+fetch_portal_apps.py
+find_oa_emails.py
+trace_companies.py
+merge_results.py
